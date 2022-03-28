@@ -1,63 +1,91 @@
 <template>
   <div id="app">
     <div class="wrapper"></div>
-      <header>
-        <div class="title">My personal costs</div>
-      </header>
-      <main>
-        <AddPaymentdForm @addNewPayment="addData"/>
-        <PaymenptDisplay :list="paymentsList"/>
-      </main>
+    <header>
+      <div class="title">My personal costs</div>
+      <div>My total: {{ getFPV }}</div>
+    </header>
+    <main>
+      <AddPaymentdForm @addNewPayment="addData" />
+      <PaymenptDisplay :list="paymentsList" />
+    </main>
   </div>
 </template>
 
 <script>
-import AddPaymentdForm from './components/AddPaymentForm.vue'
- import PaymenptDisplay from './components/PymentDisplay.vue'
+import AddPaymentdForm from "./components/AddPaymentForm.vue";
+import PaymenptDisplay from "./components/PymentDisplay.vue";
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     PaymenptDisplay,
     AddPaymentdForm,
   },
-  data(){
-    return{
-      paymentsList: []
+  data() {
+    return {
+      // paymentsList: [],
+    };
+  },
+  computed:{
+    ...mapGetters([
+      'getFullPaymentValue',
+      'getPaymentList'
+    ]),
+    getFPV(){
+      return this.$store.getters.getFullPaymentValue
+    },
+    paymentsList(){
+      return this.$store.getters.getPaymentList
     }
   },
-  methods:{
-    fetchData(){
+  actions: {
+    ...mapActions([
+      'fetchData'
+    ])
+  },
+  methods: {
+    ...mapMutations([
+      'setPaymentListData'
+      ]),
+    fetchData() {
       return [
         {
-          date: '28.03.2022',
-          category: 'Food',
+          date: "28.03.2022",
+          category: "Food",
           value: 100,
-    
         },
         {
-          date: '28.03.2022',
-          category: 'Thansport',
+          date: "28.03.2022",
+          category: "Thansport",
           value: 200,
-         
         },
         {
-          date: '28.03.2022',
-          category: 'Food',
+          date: "28.03.2022",
+          category: "Food",
           value: 150,
-          
         },
-      ]
+      ];
     },
-    addData(data){
-      this.paymentsList.push(data)
-    }
+    addData(data) {
+      // this.paymentsList.push(data);
+      this.$store.commit('addDataPaymentList', data)
+    },
   },
-  created(){
-    this.paymentsList = this.fetchData()
+  created() {
+    console.log(this.$store);
+    // Global State
+    // this.$store.commit("setPaymentListData", this.fetchData());
+    // this.setPaymentListData(this.fetchData());
+    // this.$store.dispatch('fetchData')
+    // this.$store.dispatch('fetchCategoryList')
+    
   },
-  
-}
+  mounted(){
+    this.$store.dispatch('fetchData')
+  }
+};
 </script>
 
 <style lang='scss' scoped>
@@ -65,14 +93,14 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  // text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
-.wrapper{
+.wrapper {
   font-style: 12px;
 }
-.title{
+.title {
   font-size: 20px;
 }
 </style>
