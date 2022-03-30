@@ -51,7 +51,7 @@ export default {
       const data = {
         value: this.value,
         category: this.category,
-        date: this.date || this.getCarrentDate,
+        date: this.date || this.getCarrentDate, 
         id: new Date(),
       };
       this.$emit("addNewPayment", data);

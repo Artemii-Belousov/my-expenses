@@ -7,7 +7,13 @@
     </header>
     <main>
       <AddPaymentdForm @addNewPayment="addData" />
-      <PaymenptDisplay :list="paymentsList" />
+      <PaymenptDisplay :list="currentsElement" />
+      <MyPagination :length="paymentsList.length" 
+      :n="n" 
+      :cur="cur"
+      @changePage="onChangePage"
+      />
+
     </main>
   </div>
 </template>
@@ -15,17 +21,20 @@
 <script>
 import AddPaymentdForm from "./components/AddPaymentForm.vue";
 import PaymenptDisplay from "./components/PymentDisplay.vue";
-import {mapActions, mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex';
+import MyPagination from "./components/MyPagination.vue"
 
 export default {
   name: "App",
   components: {
     PaymenptDisplay,
     AddPaymentdForm,
+    MyPagination,
   },
   data() {
     return {
-      // paymentsList: [],
+      n:3,
+      cur: 1,
     };
   },
   computed:{
@@ -38,6 +47,9 @@ export default {
     },
     paymentsList(){
       return this.$store.getters.getPaymentList
+    },
+    currentsElement(){
+      return this.paymentsList.slice(this.n * (this.cur -1), this.n  * (this.cur -1) + this.n)
     }
   },
   actions: {
@@ -72,6 +84,9 @@ export default {
       // this.paymentsList.push(data);
       this.$store.commit('addDataPaymentList', data)
     },
+     onChangePage(p){
+           this.cur = p
+         },
   },
   created() {
     console.log(this.$store);
