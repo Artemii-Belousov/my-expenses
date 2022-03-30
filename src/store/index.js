@@ -34,6 +34,7 @@ export default new Vuex.Store({
           const items = []
           for(let i = 1; i <= 50; i++){
             items.push({
+              id: 1,
               date: "28.03.2022",
               category: "Food",
               value: 100,
