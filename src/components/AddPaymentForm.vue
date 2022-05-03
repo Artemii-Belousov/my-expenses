@@ -1,6 +1,6 @@
 <template>
   <div>
-      <button @click="visible = !visible">{{ btnText }}</button>
+      <button class="btnText" @click="visible = !visible">{{ btnText }}</button>
     <div v-show="visible">
       <input placeholder="Amount" v-model.number="value" />
       <div class="categoryList" v-if="categoryList">
@@ -67,4 +67,7 @@ export default {
 </script>
 
 <style>
+.btnText{
+  margin: 10px 0;
+}
 </style>
